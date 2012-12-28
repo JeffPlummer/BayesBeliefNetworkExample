@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
+	<description>BayesExample Application Description</description>
+	<display-name>BayesExample Application</display-name>
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/spring/app-*-config.xml</param-value>
+    </context-param>
+    
+    <!-- Spring listeners -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+	
+    <!-- Spring MVC dispatcher servlet that handles incoming AMF requests on the /graniteamf endpoint -->
+	<servlet>
+	    <servlet-name>dispatcher</servlet-name>
+	    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+	    <servlet-name>dispatcher</servlet-name>
+	    <url-pattern>/graniteamf/*</url-pattern>
+	</servlet-mapping>
+	
+	<!--
+	Load configuration files and setup this application.
+	-->
+	<listener>
+		<listener-class>org.granite.config.GraniteConfigListener</listener-class>
+	</listener>
+	
+	<!--
+	Gravity asynchronous (Comet) servlet. Must be used with a valid installation and configuration
+	(APR for Tomcat and JBoss).
+	-->
+    <servlet>
+        <servlet-name>GravityServlet</servlet-name>
+        <servlet-class>org.granite.gravity.tomcat.GravityTomcatServlet</servlet-class>	
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GravityServlet</servlet-name>
+        <url-pattern>/gravityamf/*</url-pattern>
+    </servlet-mapping>
+
+	<!--
+	The default HTML welcome file, that will load the BayesExample.swc Flex application.
+	-->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>BayesExample.html</welcome-file>
+		<welcome-file>BayesExample.swf</welcome-file>
+	</welcome-file-list>
+	
+	
+</web-app>

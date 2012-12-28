@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" 
+				   creationComplete="initializeHandler(event)"
+				   dragEnter="doDragEnter(event)"
+				   dragDrop="doDragDrop(event)"
+				   >
+	<fx:Script>
+		<![CDATA[
+			import mx.core.DragSource;
+			import mx.events.DragEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.DragManager;
+			
+			import spark.components.Group;
+			import spark.components.Panel;
+			import spark.events.IndexChangeEvent;
+			 
+			public static const MODE_ADD:String = "ADD";
+			public static const MODE_REMOVE:String = "REMOVE";
+			public static const MODE_NORMAL:String = "NORMAL";
+			
+			private var _mode:String;
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				//addEventListener(MouseEvent.CLICK, onMouseClick, false, 0, true);
+
+				//Add test node
+				var newNodeView:BayesNodeView = new BayesNodeView();
+				newNodeView.x = 0;
+				newNodeView.y = 0;
+				this.addElement(newNodeView);
+				newNodeView.titleDisplay.addEventListener(MouseEvent.MOUSE_DOWN, onNodeViewMouseDown, false, 0, true);
+			}
+			
+//			protected function onMouseClick(event:MouseEvent):void
+//			{
+//				if(event.target == this.skin)
+//				{
+//					switch (_mode)
+//					{
+//						case MODE_ADD:
+//							addNode(event.localX, event.localY);
+//							break;
+//					}
+//				}
+//			}
+			
+			protected function changeSelection(event:IndexChangeEvent):void
+			{
+//				var selected:String =  ButtonBar(event.target).selectedItem;
+//				switch(selected)
+//				{
+//					case "Add":
+//						addMode();
+//						break;
+//					case "Remove":
+//						removeMode();
+//						break;
+//					default:
+//						normalMode();
+//						break;
+//				}
+			}
+//			
+//			private function addMode():void
+//			{
+//				_mode = MODE_ADD;
+//			}
+//			
+//			private function removeMode():void
+//			{
+//				_mode = MODE_REMOVE;	
+//			}
+//			
+//			private function normalMode():void
+//			{
+//				_mode = MODE_NORMAL;	
+//			}
+//			
+//			
+//			private function addNode(x:Number, y:Number):void
+//			{
+//				var newNodeView:BayesNodeView = new BayesNodeView();
+//				newNodeView.titleDisplay.addEventListener(MouseEvent.MOUSE_DOWN, onNodeViewMouseDown, false, 0, true);
+//				newNodeView.x = x;
+//				newNodeView.y = y;
+//				this.addElement(newNodeView);
+//			}
+			
+			// Variables used to hold the mouse pointer's location in the title bar.
+			// Since the mouse pointer can be anywhere in the title bar, you have to 
+			// compensate for it when you drop the panel. 
+			public var xOff:Number;
+			public var yOff:Number;
+			
+			// Drag initiator event handler for
+			// the title bar's mouseMove event.
+			private function onNodeViewMouseDown(event:MouseEvent):void
+			{
+				var dragInitiator:BayesNodeView=BayesNodeView(event.currentTarget.parentDocument.hostComponent);
+				var ds:DragSource = new DragSource();
+				ds.addData(event.currentTarget.parent, 'panel'); 
+				
+				// Update the xOff and yOff variables to show the
+				// current mouse location in the Panel.  
+				xOff = event.currentTarget.mouseX;
+				yOff = event.currentTarget.mouseY;
+				
+				// Initiate d&d. 
+				DragManager.doDrag(dragInitiator, ds, event); 
+			}
+			
+			// Function called by the canvas dragEnter event; enables dropping
+			private function doDragEnter(event:DragEvent):void 
+			{
+				DragManager.acceptDragDrop(BorderContainer(event.target));
+			}
+			
+			// Function called by the Canvas dragDrop event; 
+			// Sets the panel's position, 
+			// "dropping" it in its new location.
+			private function doDragDrop(event:DragEvent):void 
+			{
+				// Compensate for the mouse pointer's location in the title bar.
+				var tempX:int = event.currentTarget.mouseX - xOff;
+				event.dragInitiator.x = tempX;
+				
+				var tempY:int = event.currentTarget.mouseY - yOff;
+				event.dragInitiator.y = tempY;
+				
+				// Put the dragged panel on top of all other components.
+				setElementIndex(BayesNodeView(event.dragInitiator), this.numChildren-1);		
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:ButtonBar id="viewMenu" requireSelection="true"
+				 change="changeSelection(event)">
+		<s:dataProvider>
+			<s:ArrayCollection source="['Normal', 'Add', 'Remove']" />
+		</s:dataProvider>
+	</s:ButtonBar>
+</s:BorderContainer>
