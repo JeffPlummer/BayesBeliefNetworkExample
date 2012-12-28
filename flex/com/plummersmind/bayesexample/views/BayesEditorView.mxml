@@ -8,6 +8,9 @@
 				   >
 	<fx:Script>
 		<![CDATA[
+			import com.plummersmind.bayesexample.data.BayesNet;
+			import com.plummersmind.bayesexample.data.BayesNode;
+			
 			import mx.core.DragSource;
 			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
@@ -21,74 +24,49 @@
 			public static const MODE_REMOVE:String = "REMOVE";
 			public static const MODE_NORMAL:String = "NORMAL";
 			
+			private var _bayesNetworkToView:BayesNet;
+			
 			private var _mode:String;
+			
+			
+			[Bindable]
+			public function get bayesNetworkToView():BayesNet
+			{
+				return _bayesNetworkToView;
+			}
+			
+			public function set bayesNetworkToView(value:BayesNet):void
+			{
+				_bayesNetworkToView = value;
+				rebuildBayesNetDisplay();
+			}
+			
+			private function rebuildBayesNetDisplay():void
+			{
+				this.removeAllElements();
+				
+				if(bayesNetworkToView != null)
+				{
+					for each (var bn:BayesNode in bayesNetworkToView.nodes)
+					{
+						var newNodeView:BayesNodeView = new BayesNodeView();
+						newNodeView.bayesNodeToView = bn;
+						addElement(newNodeView);
+						newNodeView.titleDisplay.addEventListener(MouseEvent.MOUSE_DOWN, onNodeViewMouseDown, false, 0, true);
+					}
+				}
+			}
 			
 			protected function initializeHandler(event:FlexEvent):void
 			{
 				//addEventListener(MouseEvent.CLICK, onMouseClick, false, 0, true);
-
-				//Add test node
-				var newNodeView:BayesNodeView = new BayesNodeView();
-				newNodeView.x = 0;
-				newNodeView.y = 0;
-				this.addElement(newNodeView);
-				newNodeView.titleDisplay.addEventListener(MouseEvent.MOUSE_DOWN, onNodeViewMouseDown, false, 0, true);
 			}
 			
-//			protected function onMouseClick(event:MouseEvent):void
-//			{
-//				if(event.target == this.skin)
-//				{
-//					switch (_mode)
-//					{
-//						case MODE_ADD:
-//							addNode(event.localX, event.localY);
-//							break;
-//					}
-//				}
-//			}
+
 			
 			protected function changeSelection(event:IndexChangeEvent):void
 			{
-//				var selected:String =  ButtonBar(event.target).selectedItem;
-//				switch(selected)
-//				{
-//					case "Add":
-//						addMode();
-//						break;
-//					case "Remove":
-//						removeMode();
-//						break;
-//					default:
-//						normalMode();
-//						break;
-//				}
 			}
-//			
-//			private function addMode():void
-//			{
-//				_mode = MODE_ADD;
-//			}
-//			
-//			private function removeMode():void
-//			{
-//				_mode = MODE_REMOVE;	
-//			}
-//			
-//			private function normalMode():void
-//			{
-//				_mode = MODE_NORMAL;	
-//			}
-//			
-//			
-//			private function addNode(x:Number, y:Number):void
-//			{
-//				var newNodeView:BayesNodeView = new BayesNodeView();
-//				newNodeView.titleDisplay.addEventListener(MouseEvent.MOUSE_DOWN, onNodeViewMouseDown, false, 0, true);
-//				newNodeView.x = x;
-//				newNodeView.y = y;
-//				this.addElement(newNodeView);
-//			}
 			
 			// Variables used to hold the mouse pointer's location in the title bar.
 			// Since the mouse pointer can be anywhere in the title bar, you have to 
@@ -134,6 +112,10 @@
 				// Put the dragged panel on top of all other components.
 				setElementIndex(BayesNodeView(event.dragInitiator), this.numChildren-1);		
 			}
+
+
+			
+			
 			
 			
 		]]>

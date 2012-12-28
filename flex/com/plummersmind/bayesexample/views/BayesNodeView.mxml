@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="300" height="100"
+		 title="@{bayesNodeToView.title}"
+		 x="@{bayesNodeToView.displayXLoc}"
+		 y="@{bayesNodeToView.displayYLoc}">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.plummersmind.bayesexample.data.BayesNode;
+			
+			private var _bayesNodeToView:BayesNode;
+			
+			
+			[Bindable]
+			public function get bayesNodeToView():BayesNode
+			{
+				return _bayesNodeToView;
+			}
+
+			public function set bayesNodeToView(value:BayesNode):void
+			{
+				_bayesNodeToView = value;
+				initViewFromNodeData();
+			}
+			
+			private function initViewFromNodeData():void
+			{
+			}
+
+		]]>
+	</fx:Script>
 </s:Panel>
