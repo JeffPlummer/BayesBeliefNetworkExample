@@ -4,7 +4,10 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   minWidth="955" minHeight="600" 
 			   xmlns:views="com.plummersmind.bayesexample.views.*"
-			    initialize="initializeHandler(event)">
+			   xmlns:editor="com.plummersmind.bayesexample.views.editor.*"
+			   preinitialize="Spring.getInstance().initApplication()"
+			   initialize="initializeHandler(event)" 
+			>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -12,13 +15,26 @@
 	<fx:Script>
 		<![CDATA[
 			import com.plummersmind.bayesexample.data.BayesNet;
+			import com.plummersmind.bayesexample.views.InitializeViewControllersEvent;
+			import com.plummersmind.bayesexample.views.editor.BayesEditorDataToViewCtrl;
+			import com.plummersmind.bayesexample.views.editor.BayesEditorMoveNodesCtrl;
 			
 			import mx.events.FlexEvent;
 			
 			import net.jeffplummer.bayesexample.TestDataGenerator;
 			
+			import org.granite.tide.Tide;
+			import org.granite.tide.service.DefaultServiceInitializer;
+			import org.granite.tide.spring.Identity;
+			import org.granite.tide.spring.Spring;
+			
 			protected function initializeHandler(event:FlexEvent):void
 			{
+				var controls:Array = [BayesEditorDataToViewCtrl, BayesEditorMoveNodesCtrl];
+				Tide.getInstance().addComponents(controls);
+				
+				this.dispatchEvent(new InitializeViewControllersEvent());
+				
 				var testNet:BayesNet = TestDataGenerator.createTestNetwork();
 				bayesEditorView.bayesNetworkToView = testNet;	
 			}
@@ -26,6 +42,6 @@
 		]]>
 	</fx:Script>
 	
-	<views:BayesEditorView id="bayesEditorView" width="100%" height="100%"/>
+	<editor:BayesEditorView id="bayesEditorView" width="100%" height="100%"/>
 	
 </s:Application>

@@ -6,12 +6,16 @@
  */
 
 package com.plummersmind.bayesexample.data {
+	import com.plummersmind.bayesexample.views.BayesNodeView;
+	
 	import mx.collections.ArrayCollection;
 
     [Bindable]
     [RemoteClass(alias="com.plummersmind.bayesexample.data.BayesNode")]
     public class BayesNode extends BayesNodeBase 
 	{
+		private var _bayesNodeView:BayesNodeView;
+		
 		public function BayesNode(name:String = null, title:String=null, ... possibleStates)
 		{
 			this.name = name;
@@ -26,5 +30,16 @@ package com.plummersmind.bayesexample.data {
 				states.addItem(possibleStates[i]);
 			}
 		}
+
+		public function get bayesNodeView():BayesNodeView
+		{
+			return _bayesNodeView;
+		}
+
+		public function set bayesNodeView(value:BayesNodeView):void
+		{
+			_bayesNodeView = value;
+		}
+
     }
 }

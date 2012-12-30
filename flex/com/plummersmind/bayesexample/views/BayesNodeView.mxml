@@ -24,6 +24,7 @@
 			public function set bayesNodeToView(value:BayesNode):void
 			{
 				_bayesNodeToView = value;
+				_bayesNodeToView.bayesNodeView = this;
 				initViewFromNodeData();
 			}
 			
