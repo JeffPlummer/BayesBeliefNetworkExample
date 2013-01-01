@@ -2,7 +2,7 @@
 <s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 width="300" height="100"
+		 width="300" minHeight="1"
 		 title="@{bayesNodeToView.title}"
 		 x="@{bayesNodeToView.displayXLoc}"
 		 y="@{bayesNodeToView.displayYLoc}">
@@ -12,7 +12,16 @@
 		<![CDATA[
 			import com.plummersmind.bayesexample.data.BayesNode;
 			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ListCollectionView;
+			
 			private var _bayesNodeToView:BayesNode;
+			private var _parentLinkViews:ListCollectionView = new ArrayCollection();
+			private var _childLinkViews:ListCollectionView = new ArrayCollection();
+			
+			[Bindable]
+			private var _nodeTableDataProvider:ListCollectionView = new ArrayCollection();
+			
 			
 			
 			[Bindable]
@@ -24,14 +33,60 @@
 			public function set bayesNodeToView(value:BayesNode):void
 			{
 				_bayesNodeToView = value;
-				_bayesNodeToView.bayesNodeView = this;
 				initViewFromNodeData();
 			}
 			
 			private function initViewFromNodeData():void
 			{
+				for (var i:int = 0; i<_bayesNodeToView.states.length; i++)
+				{
+					var tableData:Object = new Object();
+					tableData.state = _bayesNodeToView.states.getItemAt(i);
+					tableData.belief = _bayesNodeToView.beliefs.getItemAt(i);
+					_nodeTableDataProvider.addItem(tableData);
+				}
 			}
+
+			public function get parentLinkViews():ListCollectionView
+			{
+				return _parentLinkViews;
+			}
+
+			public function set parentLinkViews(value:ListCollectionView):void
+			{
+				_parentLinkViews = value;
+			}
+
+			public function get childLinkViews():ListCollectionView
+			{
+				return _childLinkViews;
+			}
+
+			public function set childLinkViews(value:ListCollectionView):void
+			{
+				_childLinkViews = value;
+			}
+			
+			public function onNodeStateClicked(event:Event):void
+			{
+				trace("I am here");
+			}
+
 
 		]]>
 	</fx:Script>
+	
+	<mx:DataGrid width="100%"  rowCount="{_nodeTableDataProvider.length}" headerHeight="0" dataProvider="{_nodeTableDataProvider}">
+		<mx:columns>                
+			<mx:DataGridColumn >
+				<mx:itemRenderer>
+					<fx:Component>
+							<mx:Button label="{data.state}" click="outerDocument.onNodeStateClicked(event);" />
+					</fx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn dataField="belief" />
+				
+		</mx:columns>
+	</mx:DataGrid>
 </s:Panel>

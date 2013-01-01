@@ -4,6 +4,8 @@ package net.jeffplummer.bayesexample
 	import com.plummersmind.bayesexample.data.BayesNode;
 	import com.plummersmind.bayesexample.data.CPTableEntry;
 	import com.plummersmind.bayesexample.data.NodeEquation;
+	
+	import mx.collections.ArrayCollection;
 
 	public class TestDataGenerator
 	{
@@ -55,22 +57,29 @@ package net.jeffplummer.bayesexample
 			
 			//Parentless nodes
 			visitAsia.cpTableEntries.addItem( new CPTableEntry(null, 0.01, 0.99));
+			ArrayCollection(visitAsia.beliefs).source = [0.01, 0.99];
+			
 			smoking.cpTableEntries.addItem(new CPTableEntry(null, 0.5,  0.5));
+			ArrayCollection(smoking.beliefs).source = [0.5, 0.5];
 			
 			// VisitAsia present absent
 			tuberculosis.cpTableEntries.addItem(new CPTableEntry("visit", 0.05, 0.95));
 			tuberculosis.cpTableEntries.addItem(new CPTableEntry ("no_visit", 0.01, 0.99));
+			ArrayCollection(tuberculosis.beliefs).source = [0.07, 0.93];
 			
 			// Smoking present absent
 			cancer.cpTableEntries.addItem(new CPTableEntry("smoker", 0.1, 0.9));
 			cancer.cpTableEntries.addItem(new CPTableEntry("nonsmoker", 0.01, 0.99));
+			ArrayCollection(cancer.beliefs).source = [0.05, 0.95];
 			
 			// TbOrCa abnormal normal
 			xRay.cpTableEntries.addItem(new CPTableEntry ("true", 0.98, 0.02));
 			xRay.cpTableEntries.addItem(new CPTableEntry ("false", 0.05, 0.95));
+			ArrayCollection(xRay.beliefs).source = [0.11, 0.89];
 			
 			tbOrCa.equation = new NodeEquation("TbOrCa (Tuberculosis, Cancer) = Tuberculosis || Cancer",
 				1, false, false);
+			ArrayCollection(tbOrCa.beliefs).source = [0.06, 0.93];
 			
 			return net1;
 		}

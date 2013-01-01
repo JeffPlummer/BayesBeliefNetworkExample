@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:UIComponent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx">
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				>
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.events.DragEvent;
+			import mx.events.ResizeEvent;
 			
 			private var _parentNodeView:BayesNodeView;
 			private var _childNodeView:BayesNodeView;
+			
+			private var _line:UIComponent;
 			
 			
 			[Bindable]
@@ -18,7 +23,17 @@
 
 			public function set parentNodeView(value:BayesNodeView):void
 			{
+				if(_parentNodeView != null)
+				{
+					_parentNodeView.removeEventListener(ResizeEvent.RESIZE, onNodeResize);
+				}
+				
 				_parentNodeView = value;
+				
+				if(_parentNodeView != null)
+				{
+					_parentNodeView.addEventListener(ResizeEvent.RESIZE, onNodeResize);
+				}
 			}
 
 			[Bindable]
@@ -29,10 +44,49 @@
 
 			public function set childNodeView(value:BayesNodeView):void
 			{
+				if(_childNodeView != null)
+				{
+					_childNodeView.removeEventListener(ResizeEvent.RESIZE, onNodeResize);
+				}
+				
 				_childNodeView = value;
+				
+				if(_childNodeView != null)
+				{
+					_childNodeView.addEventListener(ResizeEvent.RESIZE, onNodeResize);
+				}
+				
 			}
-
-
+			
+			private function get parentCenterPoint():Point
+			{
+				var x:int = parentNodeView.x + (parentNodeView.width / 2);
+				var y:int = parentNodeView.y + (parentNodeView.getLayoutBoundsHeight() / 2);
+				return new Point(x, y);
+			}
+			
+			private function get childCenterPoint():Point
+			{
+				var x:int = childNodeView.x + (childNodeView.width / 2);
+				var y:int = childNodeView.y + (childNodeView.getLayoutBoundsHeight() / 2);
+				return new Point(x, y);
+			}
+			
+			protected override function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				
+				this.graphics.clear();
+				this.graphics.lineStyle(2, 0x990000, .75);
+				this.graphics.moveTo(parentCenterPoint.x, parentCenterPoint.y);
+				this.graphics.lineTo(childCenterPoint.x, childCenterPoint.y);
+			}
+			
+			private function onNodeResize(event:ResizeEvent):void
+			{
+				this.invalidateDisplayList();	
+			}
+			
 		]]>
 	</fx:Script>
 </mx:UIComponent>

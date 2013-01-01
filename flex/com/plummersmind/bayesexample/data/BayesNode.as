@@ -24,6 +24,7 @@ package com.plummersmind.bayesexample.data {
 			states = new ArrayCollection();
 			parentNodes = new ArrayCollection();
 			cpTableEntries = new ArrayCollection();
+			beliefs = new ArrayCollection();
 			
 			for(var i:uint=0; i<possibleStates.length; i++)
 			{

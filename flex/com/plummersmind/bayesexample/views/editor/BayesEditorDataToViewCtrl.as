@@ -59,6 +59,7 @@ package com.plummersmind.bayesexample.views.editor
 		{
 			var newNodeView:BayesNodeView = new BayesNodeView();
 			newNodeView.bayesNodeToView = bn;
+			bn.bayesNodeView = newNodeView;
 			editorView.addBayesNodeView(newNodeView);
 		}
 		
@@ -66,15 +67,26 @@ package com.plummersmind.bayesexample.views.editor
 		{
 			for each (var bn:BayesNode in bayesNetworkToView.nodes)
 			{
-				addNewNodeLinkViewForNode(bn);
+				addNewNodeLinkViewForAllChildLinks(bn);
 			}
 		}
 		
-		private function addNewNodeLinkViewForNode(bn:BayesNode):void
+		private function addNewNodeLinkViewForAllChildLinks(bn:BayesNode):void
 		{
-			var viewNode:BayesNodeView = bn.bayesNodeView;
-			var newNodeLinkView:BayesNodeLinkView = new BayesNodeLinkView();
-			
+			var childViewNode:BayesNodeView = bn.bayesNodeView;
+			for each (var parent:BayesNode in bn.parentNodes)
+			{
+				var parentViewNode:BayesNodeView = parent.bayesNodeView;
+				var newNodeLinkView:BayesNodeLinkView = new BayesNodeLinkView();
+				
+				newNodeLinkView.parentNodeView = parentViewNode;
+				parentViewNode.childLinkViews.addItem(newNodeLinkView);
+				
+				newNodeLinkView.childNodeView = childViewNode;
+				childViewNode.parentLinkViews.addItem(newNodeLinkView);
+				
+				editorView.addBayesNodeLinkView(newNodeLinkView);
+			}
 		}
 		
 		[Observer]

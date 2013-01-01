@@ -1,7 +1,6 @@
 package com.plummersmind.bayesexample.views.editor
 {
-	import com.plummersmind.bayesexample.data.BayesNet;
-	import com.plummersmind.bayesexample.data.BayesNode;
+	import com.plummersmind.bayesexample.views.BayesNodeLinkView;
 	import com.plummersmind.bayesexample.views.BayesNodeView;
 	import com.plummersmind.bayesexample.views.InitializeViewControllersEvent;
 	
@@ -92,15 +91,33 @@ package com.plummersmind.bayesexample.views.editor
 		// "dropping" it in its new location.
 		private function doDragDrop(event:DragEvent):void 
 		{
-			// Compensate for the mouse pointer's location in the title bar.
-			var tempX:int = event.currentTarget.mouseX - xOff;
-			event.dragInitiator.x = tempX;
-			
-			var tempY:int = event.currentTarget.mouseY - yOff;
-			event.dragInitiator.y = tempY;
-			
-			// Put the dragged panel on top of all other components.
-			editorView.setElementIndex(BayesNodeView(event.dragInitiator), editorView.numChildren-1);		
+			var movedBayesNodeView:BayesNodeView = event.dragInitiator as BayesNodeView;
+			if(movedBayesNodeView)
+			{
+				// Compensate for the mouse pointer's location in the title bar.
+				var tempX:int = event.currentTarget.mouseX - xOff;
+				movedBayesNodeView.x = tempX;
+				
+				var tempY:int = event.currentTarget.mouseY - yOff;
+				movedBayesNodeView.y = tempY;
+				
+				updateNodeLinkViews(movedBayesNodeView);
+				
+				// Put the dragged panel on top of all other components.
+				editorView.setElementIndex(movedBayesNodeView, editorView.numElements-1);		
+			}
+		}
+		
+		private function updateNodeLinkViews(node:BayesNodeView):void
+		{
+			for each (var childLink:BayesNodeLinkView in node.childLinkViews)
+			{
+				childLink.invalidateDisplayList();
+			}
+			for each (var parentLink:BayesNodeLinkView in node.parentLinkViews)
+			{
+				parentLink.invalidateDisplayList();
+			}
 		}
 	}
 }

@@ -13,7 +13,7 @@ public class BayesNode
 	private ArrayList<BayesNode> parentNodes;
 	private ArrayList<CPTableEntry> cpTableEntries;
 	private NodeEquation equation;
-	
+	private ArrayList<Double> beliefs;
 	
 	
 	public String getName() {
@@ -63,6 +63,12 @@ public class BayesNode
 	}
 	public void setDisplayYLoc(int displayYLoc) {
 		this.displayYLoc = displayYLoc;
+	}
+	public ArrayList<Double> getBeliefs() {
+		return beliefs;
+	}
+	public void setBeliefs(ArrayList<Double> beliefs) {
+		this.beliefs = beliefs;
 	}
 	
 }

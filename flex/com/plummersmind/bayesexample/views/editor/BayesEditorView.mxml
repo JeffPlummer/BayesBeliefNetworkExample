@@ -11,6 +11,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.plummersmind.bayesexample.data.BayesNet;
+			import com.plummersmind.bayesexample.views.BayesNodeLinkView;
 			import com.plummersmind.bayesexample.views.BayesNodeView;
 			
 			import mx.collections.ListCollectionView;
@@ -27,6 +28,9 @@
 			[Bindable][Out]
 			public var visibleBayesNodeViews:ListCollectionView = new ArrayCollection();
 			
+			[Bindable][Out]
+			public var visibleBayesNodeLinkViews:ListCollectionView = new ArrayCollection();
+			
 			private var _mode:String;
 
 			public function addBayesNodeView(bn:BayesNodeView):void
@@ -38,9 +42,15 @@
 			public function resetEditorView():void
 			{
 				visibleBayesNodeViews.removeAll();
+				visibleBayesNodeLinkViews.removeAll();
 				removeAllElements();
 			}
 			
+			public function addBayesNodeLinkView(bl:BayesNodeLinkView):void
+			{
+				this.addElementAt(bl, 0);
+				visibleBayesNodeLinkViews.addItem(bl);
+			}
 			
 			protected function changeSelection(event:IndexChangeEvent):void
 			{

@@ -25,14 +25,14 @@
                 // Define service endpoint resolver
                 Tide.getInstance().getContext().serviceInitializer = new DefaultServiceInitializer('/BayesExample');
                 
-                // Configuration for data push observer subscribed upon login/logout
-                // Remove if not using DataObserver
-                Tide.getInstance().addComponent("welcomeTopic", DataObserver);
-                Tide.getInstance().addEventObserver("org.granite.tide.login", "welcomeTopic", "subscribe");
-                Tide.getInstance().addEventObserver("org.granite.tide.logout", "welcomeTopic", "unsubscribe");
-                
-                // Check current authentication state
-                identity.isLoggedIn();
+//                // Configuration for data push observer subscribed upon login/logout
+//                // Remove if not using DataObserver
+//                Tide.getInstance().addComponent("welcomeTopic", DataObserver);
+//                Tide.getInstance().addEventObserver("org.granite.tide.login", "welcomeTopic", "subscribe");
+//                Tide.getInstance().addEventObserver("org.granite.tide.logout", "welcomeTopic", "unsubscribe");
+//                
+//                // Check current authentication state
+//                identity.isLoggedIn();
             }
             
             [Observer("org.granite.tide.login")]

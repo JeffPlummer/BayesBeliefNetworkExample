@@ -16,6 +16,7 @@ package com.plummersmind.bayesexample.data {
     [Bindable]
     public class BayesNodeBase implements IExternalizable {
 
+        private var _beliefs:ListCollectionView;
         private var _cpTableEntries:ListCollectionView;
         private var _displayXLoc:int;
         private var _displayYLoc:int;
@@ -24,6 +25,13 @@ package com.plummersmind.bayesexample.data {
         private var _parentNodes:ListCollectionView;
         private var _states:ListCollectionView;
         private var _title:String;
+
+        public function set beliefs(value:ListCollectionView):void {
+            _beliefs = value;
+        }
+        public function get beliefs():ListCollectionView {
+            return _beliefs;
+        }
 
         public function set cpTableEntries(value:ListCollectionView):void {
             _cpTableEntries = value;
@@ -82,6 +90,7 @@ package com.plummersmind.bayesexample.data {
         }
 
         public function readExternal(input:IDataInput):void {
+            _beliefs = input.readObject() as ListCollectionView;
             _cpTableEntries = input.readObject() as ListCollectionView;
             _displayXLoc = input.readObject() as int;
             _displayYLoc = input.readObject() as int;
@@ -93,6 +102,7 @@ package com.plummersmind.bayesexample.data {
         }
 
         public function writeExternal(output:IDataOutput):void {
+            output.writeObject((_beliefs is IPropertyHolder) ? IPropertyHolder(_beliefs).object : _beliefs);
             output.writeObject((_cpTableEntries is IPropertyHolder) ? IPropertyHolder(_cpTableEntries).object : _cpTableEntries);
             output.writeObject((_displayXLoc is IPropertyHolder) ? IPropertyHolder(_displayXLoc).object : _displayXLoc);
             output.writeObject((_displayYLoc is IPropertyHolder) ? IPropertyHolder(_displayYLoc).object : _displayYLoc);
