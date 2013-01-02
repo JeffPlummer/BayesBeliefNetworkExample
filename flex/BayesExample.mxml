@@ -11,49 +11,51 @@
    	
     <fx:Script>
         <![CDATA[
-            
-            import org.granite.tide.spring.Spring;
-            import org.granite.tide.spring.Identity;
-            import org.granite.tide.Tide;
-            import org.granite.tide.service.DefaultServiceInitializer;
-            import org.granite.tide.data.DataObserver;
+			import com.plummersmind.bayesexample.services.BayesNetworkService;
+			
+			import org.granite.tide.Tide;
+			import org.granite.tide.events.TideFaultEvent;
+			import org.granite.tide.events.TideResultEvent;
+			import org.granite.tide.service.DefaultServiceInitializer;
+			import org.granite.tide.spring.Identity;
+			import org.granite.tide.spring.Spring;
             
             [Bindable] [Inject]
             public var identity:Identity;
+			
+			[Bindable] [Inject]
+			public var bayesNetwordService:BayesNetworkService;
             
             private function init():void {
                 // Define service endpoint resolver
                 Tide.getInstance().getContext().serviceInitializer = new DefaultServiceInitializer('/BayesExample');
                 
-//                // Configuration for data push observer subscribed upon login/logout
-//                // Remove if not using DataObserver
-//                Tide.getInstance().addComponent("welcomeTopic", DataObserver);
-//                Tide.getInstance().addEventObserver("org.granite.tide.login", "welcomeTopic", "subscribe");
-//                Tide.getInstance().addEventObserver("org.granite.tide.logout", "welcomeTopic", "unsubscribe");
-//                
-//                // Check current authentication state
-//                identity.isLoggedIn();
+				bayesNetwordService.test(resultHandler, faultHandler);
             }
+			
+			public function resultHandler(event:TideResultEvent):void 
+			{
+				trace("sucess");
+			}                       
+			
+			
+			
+			public function faultHandler(event:TideFaultEvent):void 
+			{
+				trace("Fault");
+			}
             
-            [Observer("org.granite.tide.login")]
-            public function login():void {
-                removeElementAt(0);
-                addElement(new Home());
-            }
-            
-            [Observer("org.granite.tide.logout")]
-            public function logout():void {
-                removeElementAt(0);
-                addElement(new Login());
-            }
         ]]>
     </fx:Script>
+	<s:Label text="Hello"/>
+	
 
+	<!--
     <s:controlBarContent>
         <s:Label text="GraniteDS Application testtidespring" fontSize="18" fontWeight="bold" width="100%"/>
         <s:Button label="Logout" click="identity.logout();"/>
     </s:controlBarContent>
  
     <Login id="loginView"/>
-
+	-->
 </s:Application>

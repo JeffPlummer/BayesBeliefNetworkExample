@@ -7,19 +7,25 @@
 
 package com.plummersmind.bayesexample.services {
 
-    import flash.utils.IDataInput;
-    import flash.utils.IDataOutput;
-    import flash.utils.IExternalizable;
-    import org.granite.tide.IPropertyHolder;
+    import flash.utils.flash_proxy;
+    import mx.rpc.AsyncToken;
+    import org.granite.tide.BaseContext;
+    import org.granite.tide.Component;
+    import org.granite.tide.ITideResponder;
+    
+    use namespace flash_proxy;
 
-    [Bindable]
-    public class BayesNetworkServiceBase implements IExternalizable, IBayesNetworkService {
-
-
-        public function readExternal(input:IDataInput):void {
-        }
-
-        public function writeExternal(output:IDataOutput):void {
+    public class BayesNetworkServiceBase extends Component {    
+        
+        public function test(resultHandler:Object = null, faultHandler:Function = null):AsyncToken {
+            if (faultHandler != null)
+                return callProperty("test", resultHandler, faultHandler) as AsyncToken;
+            else if (resultHandler is Function || resultHandler is ITideResponder)
+                return callProperty("test", resultHandler) as AsyncToken;
+            else if (resultHandler == null)
+                return callProperty("test") as AsyncToken;
+            else
+                throw new Error("Illegal argument to remote call (last argument should be Function or ITideResponder): " + resultHandler);
         }
     }
 }

@@ -2,9 +2,8 @@ package com.plummersmind.bayesexample.services;
 
 import org.granite.messaging.service.annotations.RemoteDestination;
 
-@RemoteDestination
+//@RemoteDestination
 public interface IBayesNetworkService 
 {
-
-	public String test();
+	public String test(); 
 }
