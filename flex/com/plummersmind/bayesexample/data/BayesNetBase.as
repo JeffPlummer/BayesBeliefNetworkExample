@@ -7,14 +7,14 @@
 
 package com.plummersmind.bayesexample.data {
 
+    import com.plummersmind.bayesexample.entities.AbstractEntity;
     import flash.utils.IDataInput;
     import flash.utils.IDataOutput;
-    import flash.utils.IExternalizable;
     import mx.collections.ListCollectionView;
     import org.granite.tide.IPropertyHolder;
 
     [Bindable]
-    public class BayesNetBase implements IExternalizable {
+    public class BayesNetBase extends AbstractEntity {
 
         private var _name:String;
         private var _nodes:ListCollectionView;
@@ -33,12 +33,14 @@ package com.plummersmind.bayesexample.data {
             return _nodes;
         }
 
-        public function readExternal(input:IDataInput):void {
+        public override function readExternal(input:IDataInput):void {
+            super.readExternal(input);
             _name = input.readObject() as String;
             _nodes = input.readObject() as ListCollectionView;
         }
 
-        public function writeExternal(output:IDataOutput):void {
+        public override function writeExternal(output:IDataOutput):void {
+            super.writeExternal(output);
             output.writeObject((_name is IPropertyHolder) ? IPropertyHolder(_name).object : _name);
             output.writeObject((_nodes is IPropertyHolder) ? IPropertyHolder(_nodes).object : _nodes);
         }

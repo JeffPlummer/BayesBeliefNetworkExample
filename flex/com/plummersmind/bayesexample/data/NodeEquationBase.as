@@ -7,13 +7,13 @@
 
 package com.plummersmind.bayesexample.data {
 
+    import com.plummersmind.bayesexample.entities.AbstractEntity;
     import flash.utils.IDataInput;
     import flash.utils.IDataOutput;
-    import flash.utils.IExternalizable;
     import org.granite.tide.IPropertyHolder;
 
     [Bindable]
-    public class NodeEquationBase implements IExternalizable {
+    public class NodeEquationBase extends AbstractEntity {
 
         private var _equation:String;
         private var _equationToTable_IncludeSamplingUncertainty:Boolean;
@@ -48,14 +48,16 @@ package com.plummersmind.bayesexample.data {
             return _equationToTable_addExisting;
         }
 
-        public function readExternal(input:IDataInput):void {
+        public override function readExternal(input:IDataInput):void {
+            super.readExternal(input);
             _equation = input.readObject() as String;
             _equationToTable_IncludeSamplingUncertainty = input.readObject() as Boolean;
             _equationToTable_NumSamples = input.readObject() as int;
             _equationToTable_addExisting = input.readObject() as Boolean;
         }
 
-        public function writeExternal(output:IDataOutput):void {
+        public override function writeExternal(output:IDataOutput):void {
+            super.writeExternal(output);
             output.writeObject((_equation is IPropertyHolder) ? IPropertyHolder(_equation).object : _equation);
             output.writeObject((_equationToTable_IncludeSamplingUncertainty is IPropertyHolder) ? IPropertyHolder(_equationToTable_IncludeSamplingUncertainty).object : _equationToTable_IncludeSamplingUncertainty);
             output.writeObject((_equationToTable_NumSamples is IPropertyHolder) ? IPropertyHolder(_equationToTable_NumSamples).object : _equationToTable_NumSamples);

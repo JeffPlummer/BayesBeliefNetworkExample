@@ -1,6 +1,8 @@
 package com.plummersmind.bayesexample.data;
 
-public class NodeEquation 
+import com.plummersmind.bayesexample.entities.AbstractEntity;
+
+public class NodeEquation extends AbstractEntity 
 {
 	private String equation;
 	private int equationToTable_NumSamples;

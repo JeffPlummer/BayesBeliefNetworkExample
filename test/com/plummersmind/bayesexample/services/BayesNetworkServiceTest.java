@@ -1,11 +1,23 @@
 package com.plummersmind.bayesexample.services;
 
 
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.FileInputStream;
+
+import javax.servlet.ServletContext;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BayesNetworkServiceTest {
+import com.plummersmind.bayesexample.data.BayesNet;
+
+public class BayesNetworkServiceTest
+{
 
 	@Before
 	public void setUp() throws Exception {
@@ -18,8 +30,22 @@ public class BayesNetworkServiceTest {
 	@Test
 	public void testTest() 
 	{
-		BayesNetworkService bns = new BayesNetworkService();
-		bns.test();
+		try
+		{
+			BayesNetworkService bns = new BayesNetworkService();
+			ServletContext mockContext = mock(ServletContext.class);
+			when(mockContext.getResourceAsStream(anyString())).thenReturn(new FileInputStream("BreastCancer.dne"));
+			bns.context = mockContext;
+			
+			BayesNet testBN = bns.getTestBayesNetwork();
+			System.out.println("I am here");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			fail("Failed");
+		}
+		
 	}
 
 }

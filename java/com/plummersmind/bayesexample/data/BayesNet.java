@@ -1,12 +1,20 @@
 package com.plummersmind.bayesexample.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class BayesNet 
+import com.plummersmind.bayesexample.entities.AbstractEntity;
+
+public class BayesNet extends AbstractEntity
 {
 	private String name;
 	private List<BayesNode> nodes;
 
+	public BayesNet()
+	{
+		nodes = new ArrayList<BayesNode>();
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -21,6 +29,17 @@ public class BayesNet
 
 	public void setNodes(List<BayesNode> nodes) {
 		this.nodes = nodes;
+	}
+	
+	
+	public BayesNode getChildNodeByName(String name)
+	{
+		if (nodes != null) for (BayesNode bn : nodes)
+		{
+			if(bn.getName().equals(name))
+				return bn;
+		}
+		return null;
 	}
 	
 	

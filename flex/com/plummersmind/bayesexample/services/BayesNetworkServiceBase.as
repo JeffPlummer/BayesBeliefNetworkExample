@@ -17,13 +17,13 @@ package com.plummersmind.bayesexample.services {
 
     public class BayesNetworkServiceBase extends Component {    
         
-        public function test(resultHandler:Object = null, faultHandler:Function = null):AsyncToken {
+        public function getTestBayesNetwork(resultHandler:Object = null, faultHandler:Function = null):AsyncToken {
             if (faultHandler != null)
-                return callProperty("test", resultHandler, faultHandler) as AsyncToken;
+                return callProperty("getTestBayesNetwork", resultHandler, faultHandler) as AsyncToken;
             else if (resultHandler is Function || resultHandler is ITideResponder)
-                return callProperty("test", resultHandler) as AsyncToken;
+                return callProperty("getTestBayesNetwork", resultHandler) as AsyncToken;
             else if (resultHandler == null)
-                return callProperty("test") as AsyncToken;
+                return callProperty("getTestBayesNetwork") as AsyncToken;
             else
                 throw new Error("Illegal argument to remote call (last argument should be Function or ITideResponder): " + resultHandler);
         }

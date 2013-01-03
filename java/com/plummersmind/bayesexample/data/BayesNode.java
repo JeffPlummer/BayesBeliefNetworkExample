@@ -2,7 +2,11 @@ package com.plummersmind.bayesexample.data;
 
 import java.util.ArrayList;
 
-public class BayesNode 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.plummersmind.bayesexample.entities.AbstractEntity;
+
+public class BayesNode extends AbstractEntity
 {
 	private int displayXLoc;
 	private int displayYLoc;
@@ -13,8 +17,15 @@ public class BayesNode
 	private ArrayList<BayesNode> parentNodes;
 	private ArrayList<CPTableEntry> cpTableEntries;
 	private NodeEquation equation;
-	private ArrayList<Double> beliefs;
+	private ArrayList<Float> beliefs;
 	
+	public BayesNode()
+	{
+		states = new ArrayList<String>();
+		parentNodes = new ArrayList<BayesNode>();
+		cpTableEntries = new ArrayList<CPTableEntry>();
+		beliefs = new ArrayList<Float>();
+	}
 	
 	public String getName() {
 		return name;
@@ -64,11 +75,24 @@ public class BayesNode
 	public void setDisplayYLoc(int displayYLoc) {
 		this.displayYLoc = displayYLoc;
 	}
-	public ArrayList<Double> getBeliefs() {
+	public ArrayList<Float> getBeliefs() {
 		return beliefs;
 	}
-	public void setBeliefs(ArrayList<Double> beliefs) {
+	public void setBeliefs(ArrayList<Float> beliefs) {
 		this.beliefs = beliefs;
+	}
+	
+	public float[] getAllCPTables()
+	{
+		ArrayList<Float> retList = new ArrayList<Float>();
+		for(int i=0; i<this.cpTableEntries.size(); i++)
+		{
+			//System.out.println("Aggregating CPEntries for state: " + cpTableEntries.get(i).getParentState() );
+			retList.addAll(cpTableEntries.get(i).getProbabilities());
+		}
+		
+		float[] floatArray = ArrayUtils.toPrimitive(retList.toArray(new Float[0]), 0.0F);
+		return floatArray;
 	}
 	
 }

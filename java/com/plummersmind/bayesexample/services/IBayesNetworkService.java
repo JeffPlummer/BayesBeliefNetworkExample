@@ -1,9 +1,9 @@
 package com.plummersmind.bayesexample.services;
 
-import org.granite.messaging.service.annotations.RemoteDestination;
+import com.plummersmind.bayesexample.data.BayesNet;
 
-//@RemoteDestination
+
 public interface IBayesNetworkService 
 {
-	public String test(); 
+	public BayesNet getTestBayesNetwork(); 
 }

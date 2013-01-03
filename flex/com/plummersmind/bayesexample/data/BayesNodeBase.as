@@ -7,14 +7,14 @@
 
 package com.plummersmind.bayesexample.data {
 
+    import com.plummersmind.bayesexample.entities.AbstractEntity;
     import flash.utils.IDataInput;
     import flash.utils.IDataOutput;
-    import flash.utils.IExternalizable;
     import mx.collections.ListCollectionView;
     import org.granite.tide.IPropertyHolder;
 
     [Bindable]
-    public class BayesNodeBase implements IExternalizable {
+    public class BayesNodeBase extends AbstractEntity {
 
         private var _beliefs:ListCollectionView;
         private var _cpTableEntries:ListCollectionView;
@@ -89,7 +89,8 @@ package com.plummersmind.bayesexample.data {
             return _title;
         }
 
-        public function readExternal(input:IDataInput):void {
+        public override function readExternal(input:IDataInput):void {
+            super.readExternal(input);
             _beliefs = input.readObject() as ListCollectionView;
             _cpTableEntries = input.readObject() as ListCollectionView;
             _displayXLoc = input.readObject() as int;
@@ -101,7 +102,8 @@ package com.plummersmind.bayesexample.data {
             _title = input.readObject() as String;
         }
 
-        public function writeExternal(output:IDataOutput):void {
+        public override function writeExternal(output:IDataOutput):void {
+            super.writeExternal(output);
             output.writeObject((_beliefs is IPropertyHolder) ? IPropertyHolder(_beliefs).object : _beliefs);
             output.writeObject((_cpTableEntries is IPropertyHolder) ? IPropertyHolder(_cpTableEntries).object : _cpTableEntries);
             output.writeObject((_displayXLoc is IPropertyHolder) ? IPropertyHolder(_displayXLoc).object : _displayXLoc);

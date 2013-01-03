@@ -18,5 +18,10 @@
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/junit4.11/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/junit4.11/junit-4.11-src.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/junit4.11/junit-dep-4.11.jar"/>
+	<classpathentry kind="lib" path="lib/spring-test-3.2.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-primitives-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="output" path="bin-java"/>
 </classpath>
