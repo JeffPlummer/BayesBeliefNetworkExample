@@ -15,9 +15,9 @@ package com.plummersmind.bayesexample.data {
 									 includeUncertainty:Boolean=false, addExisting:Boolean=false)
 		{
 			this.equation = equation;
-			this.equationToTable_NumSamples = numSamples;
-			this.equationToTable_IncludeSamplingUncertainty = includeUncertainty;
-			this.equationToTable_addExisting = addExisting;
+//			this.equationToTable_NumSamples = numSamples;
+//			this.equationToTable_IncludeSamplingUncertainty = includeUncertainty;
+//			this.equationToTable_addExisting = addExisting;
 			
 		}
     }

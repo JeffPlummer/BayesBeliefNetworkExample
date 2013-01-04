@@ -6,7 +6,7 @@
  */
 
 package com.plummersmind.bayesexample.data {
-	import com.plummersmind.bayesexample.views.BayesNodeView;
+	import com.plummersmind.bayesexample.views.nodeview.BayesNodeView;
 	
 	import mx.collections.ArrayCollection;
 

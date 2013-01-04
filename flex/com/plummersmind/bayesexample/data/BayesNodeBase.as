@@ -11,9 +11,13 @@ package com.plummersmind.bayesexample.data {
     import flash.utils.IDataInput;
     import flash.utils.IDataOutput;
     import mx.collections.ListCollectionView;
+    import org.granite.meta;
+    import org.granite.tide.IEntityManager;
     import org.granite.tide.IPropertyHolder;
 
-    [Bindable]
+    use namespace meta;
+
+    [Managed]
     public class BayesNodeBase extends AbstractEntity {
 
         private var _beliefs:ListCollectionView;
@@ -89,30 +93,50 @@ package com.plummersmind.bayesexample.data {
             return _title;
         }
 
+        meta override function merge(em:IEntityManager, obj:*):void {
+            var src:BayesNodeBase = BayesNodeBase(obj);
+            super.meta::merge(em, obj);
+            if (meta::isInitialized()) {
+               em.meta_mergeExternal(src._beliefs, _beliefs, null, this, 'beliefs', function setter(o:*):void{_beliefs = o as ListCollectionView}, false);
+               em.meta_mergeExternal(src._cpTableEntries, _cpTableEntries, null, this, 'cpTableEntries', function setter(o:*):void{_cpTableEntries = o as ListCollectionView}, false);
+               em.meta_mergeExternal(src._displayXLoc, _displayXLoc, null, this, 'displayXLoc', function setter(o:*):void{_displayXLoc = o as int}, false);
+               em.meta_mergeExternal(src._displayYLoc, _displayYLoc, null, this, 'displayYLoc', function setter(o:*):void{_displayYLoc = o as int}, false);
+               em.meta_mergeExternal(src._equation, _equation, null, this, 'equation', function setter(o:*):void{_equation = o as NodeEquation}, false);
+               em.meta_mergeExternal(src._name, _name, null, this, 'name', function setter(o:*):void{_name = o as String}, false);
+               em.meta_mergeExternal(src._parentNodes, _parentNodes, null, this, 'parentNodes', function setter(o:*):void{_parentNodes = o as ListCollectionView}, false);
+               em.meta_mergeExternal(src._states, _states, null, this, 'states', function setter(o:*):void{_states = o as ListCollectionView}, false);
+               em.meta_mergeExternal(src._title, _title, null, this, 'title', function setter(o:*):void{_title = o as String}, false);
+            }
+        }
+
         public override function readExternal(input:IDataInput):void {
             super.readExternal(input);
-            _beliefs = input.readObject() as ListCollectionView;
-            _cpTableEntries = input.readObject() as ListCollectionView;
-            _displayXLoc = input.readObject() as int;
-            _displayYLoc = input.readObject() as int;
-            _equation = input.readObject() as NodeEquation;
-            _name = input.readObject() as String;
-            _parentNodes = input.readObject() as ListCollectionView;
-            _states = input.readObject() as ListCollectionView;
-            _title = input.readObject() as String;
+            if (meta::isInitialized()) {
+                _beliefs = input.readObject() as ListCollectionView;
+                _cpTableEntries = input.readObject() as ListCollectionView;
+                _displayXLoc = input.readObject() as int;
+                _displayYLoc = input.readObject() as int;
+                _equation = input.readObject() as NodeEquation;
+                _name = input.readObject() as String;
+                _parentNodes = input.readObject() as ListCollectionView;
+                _states = input.readObject() as ListCollectionView;
+                _title = input.readObject() as String;
+            }
         }
 
         public override function writeExternal(output:IDataOutput):void {
             super.writeExternal(output);
-            output.writeObject((_beliefs is IPropertyHolder) ? IPropertyHolder(_beliefs).object : _beliefs);
-            output.writeObject((_cpTableEntries is IPropertyHolder) ? IPropertyHolder(_cpTableEntries).object : _cpTableEntries);
-            output.writeObject((_displayXLoc is IPropertyHolder) ? IPropertyHolder(_displayXLoc).object : _displayXLoc);
-            output.writeObject((_displayYLoc is IPropertyHolder) ? IPropertyHolder(_displayYLoc).object : _displayYLoc);
-            output.writeObject((_equation is IPropertyHolder) ? IPropertyHolder(_equation).object : _equation);
-            output.writeObject((_name is IPropertyHolder) ? IPropertyHolder(_name).object : _name);
-            output.writeObject((_parentNodes is IPropertyHolder) ? IPropertyHolder(_parentNodes).object : _parentNodes);
-            output.writeObject((_states is IPropertyHolder) ? IPropertyHolder(_states).object : _states);
-            output.writeObject((_title is IPropertyHolder) ? IPropertyHolder(_title).object : _title);
+            if (meta::isInitialized()) {
+                output.writeObject((_beliefs is IPropertyHolder) ? IPropertyHolder(_beliefs).object : _beliefs);
+                output.writeObject((_cpTableEntries is IPropertyHolder) ? IPropertyHolder(_cpTableEntries).object : _cpTableEntries);
+                output.writeObject((_displayXLoc is IPropertyHolder) ? IPropertyHolder(_displayXLoc).object : _displayXLoc);
+                output.writeObject((_displayYLoc is IPropertyHolder) ? IPropertyHolder(_displayYLoc).object : _displayYLoc);
+                output.writeObject((_equation is IPropertyHolder) ? IPropertyHolder(_equation).object : _equation);
+                output.writeObject((_name is IPropertyHolder) ? IPropertyHolder(_name).object : _name);
+                output.writeObject((_parentNodes is IPropertyHolder) ? IPropertyHolder(_parentNodes).object : _parentNodes);
+                output.writeObject((_states is IPropertyHolder) ? IPropertyHolder(_states).object : _states);
+                output.writeObject((_title is IPropertyHolder) ? IPropertyHolder(_title).object : _title);
+            }
         }
     }
 }

@@ -3,8 +3,10 @@ package com.plummersmind.bayesexample.views.editor
 	import com.plummersmind.bayesexample.data.BayesNet;
 	import com.plummersmind.bayesexample.data.BayesNode;
 	import com.plummersmind.bayesexample.views.BayesNodeLinkView;
-	import com.plummersmind.bayesexample.views.BayesNodeView;
 	import com.plummersmind.bayesexample.views.InitializeViewControllersEvent;
+	import com.plummersmind.bayesexample.views.nodeview.BayesNodeView;
+	
+	import org.granite.tide.spring.Context;
 	
 	/**
 	 * Controller adds/removes node/link views based on the data.
@@ -15,18 +17,23 @@ package com.plummersmind.bayesexample.views.editor
 	{
 		private var _currentBayesNet:BayesNet;
 		
-		[Inject]
-		public var editorView:BayesEditorView;
+		[In]
+		public var context:Context;
+		
+		[In]
+		public var bayesEditorView:BayesEditorView;
+		
+		private var nodeViewCounter:int = 0;
 		
 		public function BayesEditorDataToViewCtrl()
 		{
 		}
 		
-		[Inject]
+		[In(create="false")]
 		public function set bayesNetworkToView(net:BayesNet):void
 		{
 			_currentBayesNet = net;
-			if( (_currentBayesNet != null) && (editorView != null) )
+			if( (_currentBayesNet != null) && (bayesEditorView != null) )
 			{
 				rebuildBayesNetDisplay();				
 			}
@@ -39,7 +46,7 @@ package com.plummersmind.bayesexample.views.editor
 		
 		private function rebuildBayesNetDisplay():void
 		{
-			editorView.resetEditorView();
+			bayesEditorView.resetEditorView();
 			rebuildAllViewNodes();
 			rebuildAllViewLinks();
 		}
@@ -60,14 +67,20 @@ package com.plummersmind.bayesexample.views.editor
 			var newNodeView:BayesNodeView = new BayesNodeView();
 			newNodeView.bayesNodeToView = bn;
 			bn.bayesNodeView = newNodeView;
-			editorView.addBayesNodeView(newNodeView);
+			
+			context["nodeView" + nodeViewCounter] = newNodeView;
+			
+			bayesEditorView.addBayesNodeView(newNodeView);
 		}
 		
 		private function rebuildAllViewLinks():void
 		{
-			for each (var bn:BayesNode in bayesNetworkToView.nodes)
+			if(bayesNetworkToView != null)
 			{
-				addNewNodeLinkViewForAllChildLinks(bn);
+				for each (var bn:BayesNode in bayesNetworkToView.nodes)
+				{
+					addNewNodeLinkViewForAllChildLinks(bn);
+				}
 			}
 		}
 		
@@ -85,7 +98,7 @@ package com.plummersmind.bayesexample.views.editor
 				newNodeLinkView.childNodeView = childViewNode;
 				childViewNode.parentLinkViews.addItem(newNodeLinkView);
 				
-				editorView.addBayesNodeLinkView(newNodeLinkView);
+				bayesEditorView.addBayesNodeLinkView(newNodeLinkView);
 			}
 		}
 		

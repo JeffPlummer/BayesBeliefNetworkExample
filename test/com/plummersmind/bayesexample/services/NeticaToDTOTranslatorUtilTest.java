@@ -31,17 +31,19 @@ public class NeticaToDTOTranslatorUtilTest
 	{
 		try 
 		{
-			Node.setConstructorClass ("norsys.neticaEx.aliases.Node");
+			//Node.setConstructorClass ("norsys.neticaEx.aliases.Node");
 			env = new Environ (null);
 
-			InputStream is2 = new FileInputStream("BreastCancer.dne");
-			net = new Net(new Streamer(is2, "chestStream", env));
+			//InputStream is2 = new FileInputStream("dog-problem.xml03");
+			Streamer s = new Streamer("ChestClinic2.dne", env);
+			//net = new Net(new Streamer(is2, "chestStream", env));
+			net = new Net(s);
 			net.compile();
 		}
 		catch (Exception e) 
 		{
-			fail("setup fail");
 			e.printStackTrace();
+			fail("setup fail");
 		} 
 	}
 

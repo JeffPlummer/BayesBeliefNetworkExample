@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.plummersmind.bayesexample.data.BayesNet;
+import com.plummersmind.bayesexample.data.BayesNode;
 
 @Service("bayesNetworkService")
 @RemoteDestination(id="bayesNetworkService", source="bayesNetworkService")
@@ -37,14 +38,19 @@ public class BayesNetworkService implements IBayesNetworkService
 				testNet.compile();
 				BayesNet dtoNet = new BayesNet();
 				NeticaToDTOTranslatorUtil.updateDTOsFromNeticaNet(testNet, dtoNet);
+				setWindowXYPositionsForTestNetwork(dtoNet);
+				env.finalize();
 				return dtoNet;
 			}
+			env.finalize();
+			
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		} 
 
+		
 		return null;
 	}
 
@@ -52,7 +58,7 @@ public class BayesNetworkService implements IBayesNetworkService
 	{
 		try 
 		{
-			InputStream is2 = context.getResourceAsStream("/BreastCancer.dne");
+			InputStream is2 = context.getResourceAsStream("/ChestClinic2.dne");
 			Net  net = new Net(new Streamer(is2, "bcStream", env));
 			return net;
 		}
@@ -61,5 +67,29 @@ public class BayesNetworkService implements IBayesNetworkService
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/** Holy cow is this a hack.  But I got other projects to work on **/
+	private void setWindowXYPositionsForTestNetwork(BayesNet bnet)
+	{
+		for (BayesNode bn : bnet.getNodes() )
+		{
+			String name = bn.getName();
+			
+			if(name.equals("VisitAsia"))
+				bn.setDisplayXYLoc(0, 0);
+			else if (name.equals("Tuberculosis"))
+				bn.setDisplayXYLoc(0, 150);
+			else if (name.equals("Smoking"))
+				bn.setDisplayXYLoc(400, 0);
+			else if (name.equals("Cancer"))
+				bn.setDisplayXYLoc(400, 150);
+			else if (name.equals("TbOrCa"))
+				bn.setDisplayXYLoc(200, 300);
+			else if (name.equals("XRay"))
+				bn.setDisplayXYLoc(0, 450);
+			else if (name.equals("Bronchitis"))
+				bn.setDisplayXYLoc(800, 150);
+		}
 	}
 }

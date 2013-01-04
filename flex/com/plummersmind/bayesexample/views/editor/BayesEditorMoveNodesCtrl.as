@@ -1,7 +1,7 @@
 package com.plummersmind.bayesexample.views.editor
 {
 	import com.plummersmind.bayesexample.views.BayesNodeLinkView;
-	import com.plummersmind.bayesexample.views.BayesNodeView;
+	import com.plummersmind.bayesexample.views.nodeview.BayesNodeView;
 	import com.plummersmind.bayesexample.views.InitializeViewControllersEvent;
 	
 	import flash.events.MouseEvent;
@@ -24,8 +24,8 @@ package com.plummersmind.bayesexample.views.editor
 	[Name("bayesEditorMoveNodesCtrl")]
 	public class BayesEditorMoveNodesCtrl
 	{
-		[Inject]
-		public var editorView:BayesEditorView;
+		[In]
+		public var bayesEditorView:BayesEditorView;
 		
 		[In]
 		public var visibleBayesNodeViews:ListCollectionView;
@@ -40,8 +40,8 @@ package com.plummersmind.bayesexample.views.editor
 		public function appInitialize(event:InitializeViewControllersEvent):void
 		{
 			visibleBayesNodeViews.addEventListener(CollectionEvent.COLLECTION_CHANGE, onVisibleNodeViewChanged, false, 0, true);
-			editorView.addEventListener(DragEvent.DRAG_ENTER, doDragEnter, false, 0, true);
-			editorView.addEventListener(DragEvent.DRAG_DROP, doDragDrop, false, 0, true);	
+			bayesEditorView.addEventListener(DragEvent.DRAG_ENTER, doDragEnter, false, 0, true);
+			bayesEditorView.addEventListener(DragEvent.DRAG_DROP, doDragDrop, false, 0, true);	
 		}
 		
 		protected function onVisibleNodeViewChanged(event:CollectionEvent):void
@@ -104,7 +104,7 @@ package com.plummersmind.bayesexample.views.editor
 				updateNodeLinkViews(movedBayesNodeView);
 				
 				// Put the dragged panel on top of all other components.
-				editorView.setElementIndex(movedBayesNodeView, editorView.numElements-1);		
+				bayesEditorView.setElementIndex(movedBayesNodeView, bayesEditorView.numElements-1);		
 			}
 		}
 		

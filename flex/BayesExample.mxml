@@ -4,14 +4,23 @@
 	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:editor="com.plummersmind.bayesexample.views.editor.*"
     xmlns="*"
     controlBarVisible="{identity.loggedIn}"
     preinitialize="Spring.getInstance().initApplication()"
+    initialize="initializeHandler(event)"
     creationComplete="init()">
    	
     <fx:Script>
         <![CDATA[
+			import com.plummersmind.bayesexample.data.BayesNet;
+			import com.plummersmind.bayesexample.data.BayesNode;
 			import com.plummersmind.bayesexample.services.BayesNetworkService;
+			import com.plummersmind.bayesexample.views.InitializeViewControllersEvent;
+			import com.plummersmind.bayesexample.views.editor.BayesEditorDataToViewCtrl;
+			import com.plummersmind.bayesexample.views.editor.BayesEditorMoveNodesCtrl;
+			
+			import mx.events.FlexEvent;
 			
 			import org.granite.tide.Tide;
 			import org.granite.tide.events.TideFaultEvent;
@@ -26,16 +35,24 @@
 			[Bindable] [Inject]
 			public var bayesNetwordService:BayesNetworkService;
             
-            private function init():void {
-                // Define service endpoint resolver
-                Tide.getInstance().getContext().serviceInitializer = new DefaultServiceInitializer('/BayesExample');
-                
-				bayesNetwordService.test(resultHandler, faultHandler);
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				var controls:Array = [BayesEditorDataToViewCtrl, BayesEditorMoveNodesCtrl];
+				Tide.getInstance().addComponents(controls);
+				
+				this.dispatchEvent(new InitializeViewControllersEvent());
+			}
+			
+            private function init():void 
+			{
+				Tide.getInstance().getContext().serviceInitializer = new DefaultServiceInitializer('/BayesExample');
+				bayesNetwordService.getTestBayesNetwork(resultHandler, faultHandler);
             }
 			
 			public function resultHandler(event:TideResultEvent):void 
 			{
-				trace("sucess");
+				var bNet:BayesNet  = event.result as BayesNet;
+				bayesEditorView.bayesNetworkToView = bNet;
 			}                       
 			
 			
@@ -45,17 +62,10 @@
 				trace("Fault");
 			}
             
-        ]]>
+			
+			
+		]]>
     </fx:Script>
-	<s:Label text="Hello"/>
 	
-
-	<!--
-    <s:controlBarContent>
-        <s:Label text="GraniteDS Application testtidespring" fontSize="18" fontWeight="bold" width="100%"/>
-        <s:Button label="Logout" click="identity.logout();"/>
-    </s:controlBarContent>
- 
-    <Login id="loginView"/>
-	-->
+	<editor:BayesEditorView id="bayesEditorView" width="100%" height="100%"/>
 </s:Application>

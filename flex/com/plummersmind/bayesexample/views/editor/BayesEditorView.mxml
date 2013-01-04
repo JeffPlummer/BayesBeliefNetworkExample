@@ -12,7 +12,7 @@
 		<![CDATA[
 			import com.plummersmind.bayesexample.data.BayesNet;
 			import com.plummersmind.bayesexample.views.BayesNodeLinkView;
-			import com.plummersmind.bayesexample.views.BayesNodeView;
+			import com.plummersmind.bayesexample.views.nodeview.BayesNodeView;
 			
 			import mx.collections.ListCollectionView;
 			

@@ -3,8 +3,11 @@ package com.plummersmind.bayesexample.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import com.plummersmind.bayesexample.entities.AbstractEntity;
 
+//@Entity
 public class BayesNet extends AbstractEntity
 {
 	private String name;

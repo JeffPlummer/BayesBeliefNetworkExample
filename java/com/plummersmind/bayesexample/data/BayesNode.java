@@ -2,10 +2,13 @@ package com.plummersmind.bayesexample.data;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.plummersmind.bayesexample.entities.AbstractEntity;
 
+@Entity
 public class BayesNode extends AbstractEntity
 {
 	private int displayXLoc;
@@ -63,6 +66,13 @@ public class BayesNode extends AbstractEntity
 	public void setEquation(NodeEquation equation) {
 		this.equation = equation;
 	}
+	
+	public void setDisplayXYLoc(int x, int y)
+	{
+		this.displayXLoc = x;
+		this.displayYLoc = y;
+	}
+	
 	public int getDisplayXLoc() {
 		return displayXLoc;
 	}

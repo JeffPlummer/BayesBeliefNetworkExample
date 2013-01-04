@@ -16,9 +16,6 @@ package com.plummersmind.bayesexample.data {
     public class NodeEquationBase extends AbstractEntity {
 
         private var _equation:String;
-        private var _equationToTable_IncludeSamplingUncertainty:Boolean;
-        private var _equationToTable_NumSamples:int;
-        private var _equationToTable_addExisting:Boolean;
 
         public function set equation(value:String):void {
             _equation = value;
@@ -27,41 +24,14 @@ package com.plummersmind.bayesexample.data {
             return _equation;
         }
 
-        public function set equationToTable_IncludeSamplingUncertainty(value:Boolean):void {
-            _equationToTable_IncludeSamplingUncertainty = value;
-        }
-        public function get equationToTable_IncludeSamplingUncertainty():Boolean {
-            return _equationToTable_IncludeSamplingUncertainty;
-        }
-
-        public function set equationToTable_NumSamples(value:int):void {
-            _equationToTable_NumSamples = value;
-        }
-        public function get equationToTable_NumSamples():int {
-            return _equationToTable_NumSamples;
-        }
-
-        public function set equationToTable_addExisting(value:Boolean):void {
-            _equationToTable_addExisting = value;
-        }
-        public function get equationToTable_addExisting():Boolean {
-            return _equationToTable_addExisting;
-        }
-
         public override function readExternal(input:IDataInput):void {
             super.readExternal(input);
             _equation = input.readObject() as String;
-            _equationToTable_IncludeSamplingUncertainty = input.readObject() as Boolean;
-            _equationToTable_NumSamples = input.readObject() as int;
-            _equationToTable_addExisting = input.readObject() as Boolean;
         }
 
         public override function writeExternal(output:IDataOutput):void {
             super.writeExternal(output);
             output.writeObject((_equation is IPropertyHolder) ? IPropertyHolder(_equation).object : _equation);
-            output.writeObject((_equationToTable_IncludeSamplingUncertainty is IPropertyHolder) ? IPropertyHolder(_equationToTable_IncludeSamplingUncertainty).object : _equationToTable_IncludeSamplingUncertainty);
-            output.writeObject((_equationToTable_NumSamples is IPropertyHolder) ? IPropertyHolder(_equationToTable_NumSamples).object : _equationToTable_NumSamples);
-            output.writeObject((_equationToTable_addExisting is IPropertyHolder) ? IPropertyHolder(_equationToTable_addExisting).object : _equationToTable_addExisting);
         }
     }
 }
